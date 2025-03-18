@@ -1,5 +1,11 @@
 # Implementation of Caesar Cipher Algorithm in C
 
+
+![image](https://github.com/user-attachments/assets/672a1289-8711-4557-960a-2da6ee488dc6)
+
+
+
+
 # Check out the Practical Video demonstration in Bangla : https://youtu.be/UTzdD5VXIzs
 
 # Caesar Cipher Implementation in C
