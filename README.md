@@ -42,45 +42,69 @@ Before running the code, ensure you have a basic understanding of:
 ```c
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
-void caesarCipher(char *text, int shift, int encrypt) {
-    int length = strlen(text);
-    for (int i = 0; i < length; i++) {
-        if (isalpha(text[i])) {
-            char base = isupper(text[i]) ? 'A' : 'a';
-            if(encrypt){
-                text[i] = (text[i] - base + shift) % 26 + base;
-            } else {
-                text[i] = (text[i] - base - shift + 26) % 26 + base;
-            }
+void caesar_encrypt(char *message, int key, char *result) {
+    int i = 0;
+    while (message[i] != '\0') {
+        char ch = message[i];
+
+        // Encrypt uppercase letters
+        if (ch >= 'A' && ch <= 'Z') {
+            result[i] = ((ch - 'A' + key) % 26) + 'A';
         }
+        // Encrypt lowercase letters
+        else if (ch >= 'a' && ch <= 'z') {
+            result[i] = ((ch - 'a' + key) % 26) + 'a';
+        }
+        // Keep non-alphabetic characters unchanged
+        else {
+            result[i] = ch;
+        }
+        i++;
     }
+    result[i] = '\0'; // Add null terminator
+}
+
+void caesar_decrypt(char *encrypted, int key, char *decrypted) {
+    int i = 0;
+    while (encrypted[i] != '\0') {
+        char ch = encrypted[i];
+
+        // Decrypt uppercase letters
+        if (ch >= 'A' && ch <= 'Z') {
+            decrypted[i] = ((ch - 'A' - key + 26) % 26) + 'A';
+        }
+        // Decrypt lowercase letters
+        else if (ch >= 'a' && ch <= 'z') {
+            decrypted[i] = ((ch - 'a' - key + 26) % 26) + 'a';
+        }
+        // Keep non-alphabetic characters unchanged
+        else {
+            decrypted[i] = ch;
+        }
+        i++;
+    }
+    decrypted[i] = '\0'; // Add null terminator
 }
 
 int main() {
-    char text[1000];
-    int shift;
-    int encrypt;
+    char message[100];
+    int key;
+    char encrypted[100];
+    char decrypted[100];
 
-    printf("Enter the text: ");
-    fgets(text, sizeof(text), stdin);
+    printf("Enter the message to encrypt/decrypt: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = 0; // Remove trailing newline
 
-    printf("Enter the shift value: ");
-    scanf("%d", &shift);
+    printf("Enter the key (shift value): ");
+    scanf("%d", &key);
 
-    printf("Encrypt (1) or Decrypt (0)? ");
-    scanf("%d", &encrypt);
+    caesar_encrypt(message, key, encrypted);
+    printf("Encrypted message: %s\n", encrypted);
 
-    text[strcspn(text, "\n")] = 0;
-
-    caesarCipher(text, shift, encrypt);
-
-    if(encrypt){
-        printf("Encrypted text: %s\n", text);
-    } else {
-        printf("Decrypted text: %s\n", text);
-    }
+    caesar_decrypt(encrypted, key, decrypted);
+    printf("Decrypted message: %s\n", decrypted);
 
     return 0;
 }
